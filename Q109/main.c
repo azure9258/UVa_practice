@@ -1,7 +1,7 @@
 /*
 tip : if no line feed at output, it would get "Wrong answer"
 method : Monotone Chain Convex Hull (reference : http://www.algorithmist.com/index.php/Monotone_Chain_Convex_Hull)
-Last modified : 2014/05/1
+Last modified : 2014/05/18
 */
 #include <stdio.h>
 #include <string.h>
