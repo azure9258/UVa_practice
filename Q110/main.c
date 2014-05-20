@@ -4,12 +4,19 @@ Last modified : 2014/05/20
 */
 #include <stdio.h>
 
-char alphabet[8];
-int num_alpha;
+char alphabet[8]; /* order of a, b, d, e, f, g, h, i */
+int num_alpha; /* numbers of alphabet array */
 
+/* run recursive */
 void run_sort(int, int);
+
+/* print out the indent of each line of code */
 void print_indent(int);
+
+/* print out the line of readln(a,b,...) */
 void print_readln();
+
+/* exchange the value of alphabet[n1] and alphabet[n2] */
 void swap(int, int);
 
 int main()
