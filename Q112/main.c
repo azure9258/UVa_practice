@@ -1,10 +1,13 @@
 /*
+tip : read a string rather than a char would be faster. N value(define header) might change when bigger test case
 method : stack
 Last modified : 2014/05/22
 */
 #include <stdio.h>
-#define N1 5000
-#define N2 1000
+#include <string.h>
+#define N_expression 4000
+#define N_expression_d 1000
+#define N_buffer 2000
 
 int main()
 {
@@ -12,24 +15,33 @@ int main()
     int n; /* input */
     int level; /* current level */
     char input_c; /* input */
-    char expression[N1]; /* save the char into array */
-    int expression_d[N2]; /* save the integer part into this array */
+    char expression[N_expression]; /* save the char into array */
+    int expression_d[N_expression_d]; /* save the integer part into this array */
     int num_expression, num_expression_d; /* the number of array */
     int num; /* temporarily save the value of integer */
     int pre_num; /* check if previous char is num */
-    int stack[N2];
+    int stack[N_expression_d];
     int num_stack;
     int check; /* check yes or no */
     int sum;
     int minus; /* check if number is negative */
+    char buffer[N_buffer]; /* input buffer */
+    int i_buffer, len; /* i_buffer : index of buffer array, len : length of buffer array */
 
     /* freopen("input.txt", "r", stdin); */
 
     while(scanf("%d", &n) == 1)
     {
         /* parse the S-expression into array */
-        scanf("%c", &input_c); /* filter space char*/
-        scanf("%c", &input_c);
+        scanf("%s", buffer); /* read a string */
+        len = strlen(buffer);
+        i_buffer = 1;
+        if(len == 1)
+        {
+            scanf("%s", buffer); /* filter space char*/
+            len = strlen(buffer);
+            i_buffer = 0;
+        }
         level = 1;
         expression[0] = '(';
         num_expression = 1;
@@ -39,12 +51,18 @@ int main()
 
         while(level != 0)
         {
-            scanf("%c", &input_c);
+            input_c = buffer[i_buffer++];
             if(pre_num == 1)
             {
                 if(input_c >= 48 && input_c <=57)
                 {
                     num = num * 10 + (input_c - 48);
+                    if(i_buffer >= len && level != 0)
+                    {
+                        scanf("%s", buffer); /* filter space char*/
+                        len = strlen(buffer);
+                        i_buffer = 0;
+                    }
                     continue;
                 }
                 else
@@ -57,11 +75,6 @@ int main()
                     pre_num = 0;
                     minus = 0;
                 }
-            }
-
-            if(input_c == ' ' || input_c == '\n')
-            {
-                continue;
             }
             if(input_c == '(')
             {
@@ -82,6 +95,12 @@ int main()
                 pre_num = 1;
                 num = input_c - 48; /* transform from char to int */
                 expression[num_expression++] = 'd'; /* d means that location is a number */
+            }
+            if(i_buffer >= len && level != 0)
+            {
+                scanf("%s", buffer); /* filter space char*/
+                len = strlen(buffer);
+                i_buffer = 0;
             }
         }
 
